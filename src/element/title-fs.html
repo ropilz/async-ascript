@@ -1,0 +1,111 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
+
+<link rel="import" href="shared-styles.html">
+
+
+<dom-module id="nn-title-fs">
+  <template>
+    <style include="shared-styles">
+      .wrapper {
+        position: absolute;
+        top: 0;
+        color: var(--accent-color);
+        font-family: var(--font-main);
+        height: 600px;
+        width: 800px;
+        font-size: 58px;
+        font-weight: 700;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+
+    <div class="wrapper">
+      <marked-element markdown="[[_title]]" old hidden="[[_hiden]]"></marked-element>
+    </div>
+    <div class="wrapper">
+      <marked-element markdown="[[_titleNew]]" new hidden="[[_hidenew]]"></marked-element>
+    </div>
+  </template>
+
+  <script>
+    class MlTitleFS extends Polymer.Element {
+      static get is() { return 'nn-title-fs'; }
+      constructor() {
+        super()
+        this._hidenew = true
+      }
+
+      static get properties() {
+        return {
+          title: String,
+          animate: Boolean
+        };
+      }
+
+      static get observers() {
+        return [
+          '_updateTitle(title, animate)'
+        ];
+      }
+
+      _updateTitle(title, animate) {
+        if (title === this._title) { return }
+        this._hiden = false
+        if (!animate) {
+          this._title = title
+          this._titleNew = ''
+          this._hidenew = true
+          if (!this._title) {
+            this._hiden = true
+          } else {
+            this._hiden = false
+          }
+        } else {
+          const newNode = this.root.querySelector('[new]')
+          const oldNode = this.root.querySelector('[old]')
+          this._titleNew = title
+          this._hidenew = false
+          let animation1 = oldNode.animate([
+            {opacity: 1, offset: 0, transform: 'translateX(0px)'},
+            {opacity: 0, offset: 1, transform: 'translateX(-40px)'},
+          ], {
+            duration: 235,
+            easing: 'ease-in',
+            fill: 'both'
+          })
+          let animation2 = newNode.animate([
+            {opacity: 0, offset: 0, transform: 'translateX(40px)'},
+            {opacity: 1, offset: 1, transform: 'translateX(0px)'}
+          ], {
+            duration: 235,
+            easing: 'ease-in',
+            fill: 'both'
+          })
+          animation2.onfinish = (a, b, c) => {
+            animation2.cancel()
+            animation1.cancel()
+            requestAnimationFrame(() => {
+              this._title = title
+              this._titleNew = ''
+              this._hidenew = true
+              if (!this._title) {
+                this._hiden = true
+              } else {
+                this._hiden = false
+              }
+            })
+          }
+        }
+
+      }
+    }
+
+    window.customElements.define(MlTitleFS.is, MlTitleFS);
+    console.log('loaded')
+  </script>
+</dom-module>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Async-ascript</title>
+    <base href="/">
+  </head>
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Press+Start+2P" rel="stylesheet">
+  <style>
+    body {
+      --background-color: #2E2F2F;
+      --primary-color: #fff;
+      --accent-color: #E81E5F;
+
+      --title-fs: #fff;
+      --font-main: 'Montserrat';
+      --font-alter: 'Press Start 2P';
+    }
+    body {
+      background: white;
+      color: var(--primary-color);
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    .loading {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    .loading h1 {
+      font-family: helvetica;
+
+    }
+
+    .loading p {
+      font-weight: bold;
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .loading-bar {
+      /* display: flex; */
+      white-space: nowrap;
+      width: 400px;
+      overflow-x: hidden;
+      /* background-color: white; */
+    }
+    .loading-bar > span {
+      position: relative;
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      margin-right: 18px;
+      background: var(--accent-color);
+      animation: loading-bar-progress 0.6s infinite;
+      animation-timing-function: linear;
+    }
+    @keyframes loading-bar-progress {
+      from { left: -17px; margin-right: 12px}
+      to { left: 0px; margin-right: 12px}
+    }
+  </style>
+  <body>
+    <div class="loading" id="loading-state" style="display: none">
+      <h1 id="loading-title">(╭ರ_⊙)</h1>
+      <p id="loading-action"> cargando scripts</p>
+      <div class="loading-bar">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+    <script>document.getElementById('loading-state').style.display = 'flex'</script>
+    <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+    <link rel="import" href="src/app.html">
+    <noscript>
+      <div class="loading">
+        <h1>☉ ‿ ⚆</h1>
+        <p>Javascript deshabilitado</p>
+      </div>
+    </noscript>
+  </body>
+</html>

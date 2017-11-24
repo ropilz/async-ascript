@@ -1,0 +1,153 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./element/title-fs.html">
+<link rel="import" href="./element/title.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="nn-app">
+  <template>
+    <style include="shared-styles">
+      :host {
+        width: 800px;
+        height: 600px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(var(--scale));
+        overflow: hidden;
+        background: var(--background-color);
+      }
+    </style>
+
+    <nn-title-fs id="title-fs"></nn-title-fs>
+    <nn-title id="title"></nn-title>
+  </template>
+
+  <script>
+    const slides = [
+      // intro
+      {
+        elem: [
+          {id: 'title', props: [ ['title', ''] ]},
+          {id: 'title-fs', props: [ ['title', 'Javascript asíncrono<br/>¡async-ascript!'] ]}
+        ]
+      },
+      {
+        elem: [
+          {id: 'title', props: [ ['title', ''] ]},
+          {id: 'title-fs', props: [ ['title', 'Javascript asíncrono<br/>¿Por qué lo necesitamos?'] ]},
+        ]
+      },
+      {
+        elem: [
+          {id: 'title', props: [ ['title', 'Pila de ejecución'] ]},
+          {id: 'title-fs', props: [ ['title', ''] ]}
+
+        ]
+      },
+      {
+        elem: [
+          {id: 'title', props: [ ['title', ''] ]},
+          {id: 'title-fs', props: [ ['title', 'test title'] ]}
+        ]
+      }
+    ]
+    class MlApp extends Polymer.Element {
+
+      static get is() { return 'nn-app'; }
+
+      // life cycle
+      connectedCallback() {
+        super.connectedCallback()
+        this.updateScale = this.updateScale.bind(this)
+        this.loadPath = this.loadPath.bind(this)
+        // update scale
+        window.addEventListener('resize', this.updateScale);
+        this.updateScale();
+        // load path
+        window.onpopstate = this.loadPath
+        this.loadPath()
+        // touch events
+        document.addEventListener('click', () => {
+          if (slides.length > this.step + 1) {
+            this.gotoSlide(this.step + 1)
+          }
+        })
+        let checkpoint = 0
+        let debounce = 250
+        document.addEventListener('keydown', (e) => {
+          const time = new Date().getTime()
+          if (time - checkpoint - debounce <= 0) {
+            return
+          }
+          checkpoint = time
+          switch (e.keyCode) {
+            case 39: {
+              if (slides.length > this.step + 1) {
+                this.gotoSlide(this.step + 1)
+              }
+              break
+            }
+            case 37: {
+              if ( this.step > 0) {
+                this.gotoSlide(this.step - 1)
+              }
+              break
+            }
+          }
+        })
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback()
+        window.removeEventListener('resize', this.updateScale)
+        window.onpopstate = null
+      }
+
+      // custom
+      loadPath() {
+        const segments = window.location.pathname.split('/')
+        let step
+        if (segments.length > 2 && segments[1] === 'slides') {
+          step = parseInt(segments[2], 10)
+        }
+        if (!step) { step = 0; }
+        if (step + 1 > slides.length) { step = slides.length - 1 }
+        this.gotoSlide(step)
+      }
+
+      gotoSlide(step) {
+        if (this.step === step) { return }
+        if (this.step === undefined) { history.replaceState({}, `/slides/${step}`, `/slides/${step}`) }
+        history.pushState({}, `/slides/${step}`, `/slides/${step}`)
+        const animate = this.step + 1 === step
+        this.step = step
+        requestAnimationFrame(() => {
+          const slide = slides[step]
+          for (const elem of slide.elem) {
+            let node = this.root.getElementById(elem.id);
+            if (animate) {
+              node.setAttribute('animate', true)
+            } else {
+              node.removeAttribute('animate')
+            }
+            for (const prop of elem.props) {
+              node.setAttribute.apply(node, prop)
+            }
+          }
+        })
+      }
+
+      updateScale() {
+        requestAnimationFrame(() => {
+          const ratioX = window.innerWidth / 800
+          const ratioY = window.innerHeight / 600
+          const ratio = Math.min(ratioX, ratioY).toString()
+          this.style.setProperty('--scale', ratio)
+        })
+      }
+    }
+
+    window.customElements.define(MlApp.is, MlApp)
+    document.body.innerHTML = `<nn-app></nn-app>`
+  </script>
+</dom-module>
