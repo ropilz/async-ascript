@@ -1,0 +1,229 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
+
+<link rel="import" href="shared-styles.html">
+
+
+<dom-module id="nn-queue">
+  <template>
+    <style include="shared-styles">
+      .stack[hidden] {
+        display: none;
+      }
+      .queue {
+        position: absolute;
+        left: 20px;
+        top: 477px;
+      }
+      .queue-row {
+        display: flex;
+      }
+
+      .label {
+        background: white;
+        height: 51px;
+        color: #2e2f2f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        box-sizing: border-box;
+        margin: 0;
+        margin-bottom: 5px;
+        width: 170px;
+      }
+
+      .item {
+        background: var(--js-block-color);
+        font-family: var(--font-code);
+        font-size: 22px;
+        height: 51px;
+        color: #2e2f2f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        box-sizing: border-box;
+        margin: 0;
+        margin-bottom: 5px;
+        margin-left: 5px;
+        overflow: hidden;
+      }
+      .item-container {
+        display: flex;
+        overflow: hidden;
+      }
+    </style>
+
+    <div class="queue" id="nn-queue" hidden="[[_hidden]]">
+      <div class="queue-row">
+        <p class="label">Task</p>
+        <div id="nn-task" class="item-container"></div>
+      </div>
+      <div class="queue-row">
+        <p class="label" >Microtask</p>
+        <div id="nn-micro" class="item-container"></div>
+      </div>
+      <!-- <template is="dom-repeat" items="{{stackItems}}">
+        <div class="item">[[item]]</div>
+      </template> -->
+    </div>
+
+  </template>
+
+  <script>
+    class MlQueue extends Polymer.Element {
+      static get is() { return 'nn-queue'; }
+
+      static get properties() {
+        return {
+          micro: String,
+          task: String,
+          withanimation: Boolean
+        };
+      }
+
+      static get observers() {
+        return [
+          '_updateMicro(micro)',
+          '_updateTask(task)',
+          '_updateVisible(micro, task)',
+        ];
+      }
+
+      _updateVisible(micro, task) {
+        if (micro === null && task === null) {
+          this._hidden = true
+        } else {
+          this._hidden = false
+        }
+      }
+
+      _getQueueItems(stack) {
+        if (typeof stack !== 'string' || stack === '') {
+          return []
+        }
+        return stack.split('>')
+      }
+
+      _updateTask(stack) {
+        this._hidden = false
+        if (stack === null) {
+          this._hidden = true
+        }
+        const newStack = this._getQueueItems(stack)
+        let items = [...newStack]
+        this.taskItems = this.taskItems || []
+        const stackNode = this.root.getElementById('nn-task')
+        let diff = items.length - this.taskItems.length
+        if (diff > 0) {
+          items = items.splice(-diff, diff)
+          for (const text of items) {
+            const div = document.createElement('div')
+            div.innerText = text
+            div.classList.add('item')
+            console.log(this.withanimation)
+
+            if (this.withanimation) {
+              let animation = div.animate([
+                {opacity: 0, offset: 0, transform: 'translateX(20px)'},
+                {opacity: 1, offset: 0.3},
+                {opacity: 1, offset: 1, transform: 'translateY(0px)'}
+              ], {
+                duration: 135,
+                easing: 'ease-in',
+                fill: 'both'
+              })
+              animation.onfinish = () => animation.cancel()
+            }
+            stackNode.appendChild(div)
+          }
+        } else {
+          const children = stackNode.children
+          while (diff < 0) {
+            diff += 1
+            if (this.withanimation) {
+              const child = children[0]
+              let animation = child.animate([
+                {opacity: 1, offset: 0, marginLeft: '5px'},
+                {opacity: 1, offset: 0.7},
+                {opacity: 0, offset: 1, marginLeft: `-${child.clientWidth}px`}
+
+              ], {
+                duration: 135,
+                easing: 'ease-out',
+                fill: 'both'
+              })
+              animation.onfinish = () => requestAnimationFrame(() => stackNode.removeChild(child))
+            } else {
+              stackNode.removeChild(children[children.length - 1])
+            }
+
+          }
+        }
+        this.taskItems = newStack
+      }
+
+      _updateMicro(stack) {
+        this._hidden = false
+        if (stack === null) {
+          this._hidden = true
+        }
+        const newStack = this._getQueueItems(stack)
+        let items = [...newStack]
+        this.microItems = this.microItems || []
+        const stackNode = this.root.getElementById('nn-micro')
+        let diff = items.length - this.microItems.length
+        if (diff > 0) {
+          items = items.splice(-diff, diff)
+          for (const text of items) {
+            const div = document.createElement('div')
+            div.innerText = text
+            div.classList.add('item')
+            console.log(this.withanimation)
+
+            if (this.withanimation) {
+              let animation = div.animate([
+                {opacity: 0, offset: 0, transform: 'translateX(20px)'},
+                {opacity: 1, offset: 0.3},
+                {opacity: 1, offset: 1, transform: 'translateY(0px)'}
+              ], {
+                duration: 235,
+                easing: 'ease-in',
+                fill: 'both'
+              })
+              animation.onfinish = () => animation.cancel()
+            }
+            stackNode.appendChild(div)
+          }
+        } else {
+          const children = stackNode.children
+          while (diff < 0) {
+            diff += 1
+            if (this.withanimation) {
+              const child = children[0]
+              let animation = child.animate([
+                {opacity: 1, offset: 0, marginLeft: '5px'},
+                {opacity: 1, offset: 0.7},
+                {opacity: 0, offset: 1, marginLeft: `-${child.clientWidth}px`}
+
+              ], {
+                duration: 235,
+                easing: 'ease-out',
+                fill: 'both'
+              })
+              animation.onfinish = () => stackNode.removeChild(child)
+            } else {
+              stackNode.removeChild(children[children.length - 1])
+            }
+
+          }
+        }
+        this.microItems = newStack
+      }
+    }
+
+    window.customElements.define(MlQueue.is, MlQueue);
+    console.log('loaded')
+  </script>
+</dom-module>

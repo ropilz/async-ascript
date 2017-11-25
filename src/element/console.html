@@ -35,6 +35,17 @@
         margin-left: 50px;
         font-size: 42px;
       }
+      #queue1, #timeout {
+        position: absolute;
+        border-top: 3px solid white;
+        top: 210px;
+        width: 100%;
+      }
+      #queue1 pre, #timeout pre {
+        width: 590px;
+        margin-left: 50px;
+        font-size: 42px;
+      }
     </style>
 
     <div class="code" id="nn-console" hidden="[[_hidden]]">
@@ -44,13 +55,30 @@
         </pre>
       </div>
       <div id="async" hidden>
-          <pre>
+        <pre>
 <span>primero</span>
 <span>tercero</span>
 <span>segundo</span>
-          </pre>
-        </div>
+        </pre>
+      </div>
+      <div id="queue1" hidden>
+        <pre>
+<span>script1</span>
+<span>script2</span>
+<span>promise1</span>
+<span>promise2</span>
+<span>timeout</span>
+        </pre>
+      </div>
+      <div id="timeout" hidden>
+        <pre>
+<span>1</span>
+<span>0</span>
+        </pre>
+      </div>
     </div>
+
+  </div>
 
   </template>
 

@@ -6,6 +6,7 @@
 <link rel="import" href="./element/code.html">
 <link rel="import" href="./element/code.html">
 <link rel="import" href="./element/console.html">
+<link rel="import" href="./element/queue.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="nn-app">
@@ -29,6 +30,8 @@
     <nn-tips  id="tips"></nn-tips>
     <nn-code id="code"></nn-code>
     <nn-console id="console"></nn-console>
+    <nn-queue id="queue" micro='' task=''></nn-queue>
+
   </template>
 
   <script>
@@ -37,8 +40,9 @@
       ['title-fs']: { title: ''},
       ['stack']: { stack: false },
       ['tips']: { tip: false },
-      ['code']: { code: false, line: -1 },
+      ['code']: { code: false, line: -1, fullscreen: false },
       ['console']: { code: false, line: 0 },
+      ['queue']: { micro: false, task: false },
     }
     const slides = [
       // intro
@@ -200,19 +204,19 @@
           ['title']: { title: 'Pila de ejecución'},
           ['stack']: { stack: 'script' },
           ['code']: { code: 'stack', line: 10 },
-          ['console']: { code: 'stack'},
+          ['console']: { code: 'stack', line: 1},
       }},
       { state: { // 29
           ['title']: { title: 'Pila de ejecución'},
           ['stack']: { stack: 'script' },
           ['code']: { code: 'stack', line: -1 },
-          ['console']: { code: 'stack'},
+          ['console']: { code: 'stack', line: 1},
       }},
       { state: { // 30
           ['title']: { title: 'Pila de ejecución'},
           ['stack']: { stack: '' },
           ['code']: { code: 'stack', line: -1 },
-          ['console']: { code: 'stack'},
+          ['console']: { code: 'stack', line: 1},
       }},
 
       // eventos asíncronos
@@ -256,6 +260,12 @@
           ['title']: { title: 'Eventos asíncronos'},
           ['stack']: { stack: 'script' },
           ['code']: { code: 'async', line: 1 },
+          ['console']: { code: 'async', line: 1 },
+      }},
+      { state: { // 36
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'async', line: 3 },
           ['console']: { code: 'async', line: 1 },
       }},
       { state: { // 36
@@ -330,6 +340,346 @@
           ['code']: { code: 'async', line: -1 },
           ['console']: { code: 'async', line: 3 },
       }},
+      { state: { // 38
+          ['title']: { title: 'Eventos asíncronos'}
+      }},
+      { state: { // 30
+          ['title-fs']: { title: 'Definiendo functiones<br />para correr en el **futuro**'},
+      }},
+      { state: { // 30
+          ['code']: { code: 'timeout', line: -1, fullscreen: true },
+      }},
+      { state: { // 30
+          ['code']: { code: 'timeout', line: 0, fullscreen: true },
+      }},
+      { state: { // 30
+          ['code']: { code: 'timeout', line: 1, fullscreen: true },
+      }},
+      { state: { // 30
+          ['code']: { code: 'timeout', line: -1, fullscreen: true },
+          ['console']: { code: 'timeout', line: 2},
+      }},
+
+
+      { state: { // 30
+          ['title-fs']: { title: '¿Qué más se puede hacer<br/>con **setTimeout**?'},
+      }},
+      { state: { // 30
+          ['title-fs']: { title: '¿Ordenar números?'},
+      }},
+      { state: { }},
+      { state: {
+          ['code']: { code: 'timeoutSort', line: -1, fullscreen: true },
+      }},
+      { state: {
+          ['code']: { code: 'timeoutSort', line: 2, fullscreen: true },
+      }},
+      { state: {
+          ['code']: { code: 'timeoutSort', line: 3, fullscreen: true },
+      }},
+      { state: {
+          ['code']: { code: 'timeoutSort', line: 8, fullscreen: true },
+      }},
+      { state: {
+          ['code']: { code: 'timeoutSort', line: 4, fullscreen: true },
+      }},
+      { state: {
+          ['code']: { code: 'timeoutSort', line: 5, fullscreen: true },
+      }},
+      { state: {
+          ['code']: { code: 'timeoutSort', line: 6, fullscreen: true },
+      }},
+      { state: {
+          ['code']: { code: 'timeoutSort', line: 11, fullscreen: true },
+      }},
+      { state: { // 30
+          ['title-fs']: { title: '**[1, 3, 5, 6, 7, 9]**'}
+      }},
+      { state: { // 30
+          ['title-fs']: { title: 'setTimeout **vs** Promises'}
+      }},
+
+      // Micro eventos
+      { state: { }},
+      { state: {
+          ['code']: { code: 'queue1', line: -1, fullscreen: true },
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: -1 },
+          ['stack']: { stack: '' },
+          ['queue']: { task: '', micro: '' },
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: -1 },
+          ['stack']: { stack: '' },
+          ['queue']: { task: '', micro: '' },
+          ['tips']: { tip: 'queue' },
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: -1 },
+          ['stack']: { stack: '' },
+          ['queue']: { task: '', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 0 },
+          ['stack']: { stack: 'script' },
+          ['queue']: { task: '', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 0 },
+          ['stack']: { stack: 'script>log' },
+          ['queue']: { task: '', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 0 },
+          ['stack']: { stack: 'script' },
+          ['queue']: { task: '', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 2 },
+          ['stack']: { stack: 'script' },
+          ['queue']: { task: '', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 2 },
+          ['stack']: { stack: 'script>setTimeout' },
+          ['queue']: { task: '', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 2 },
+          ['stack']: { stack: 'script>setTimeout' },
+          ['queue']: { task: 'timeout', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 2 },
+          ['stack']: { stack: 'script' },
+          ['queue']: { task: 'timeout', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 6 },
+          ['stack']: { stack: 'script' },
+          ['queue']: { task: 'timeout', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 6 },
+          ['stack']: { stack: 'script>then' },
+          ['queue']: { task: 'timeout', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 6 },
+          ['stack']: { stack: 'script>then' },
+          ['queue']: { task: 'timeout', micro: 'promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 6 },
+          ['stack']: { stack: 'script' },
+          ['queue']: { task: 'timeout', micro: 'promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 8 },
+          ['stack']: { stack: 'script' },
+          ['queue']: { task: 'timeout', micro: 'promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 8 },
+          ['stack']: { stack: 'script>then' },
+          ['queue']: { task: 'timeout', micro: 'promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 8 },
+          ['stack']: { stack: 'script>then' },
+          ['queue']: { task: 'timeout', micro: 'promise.then>promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 8 },
+          ['stack']: { stack: 'script' },
+          ['queue']: { task: 'timeout', micro: 'promise.then>promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 12 },
+          ['stack']: { stack: 'script' },
+          ['queue']: { task: 'timeout', micro: 'promise.then>promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 12 },
+          ['stack']: { stack: 'script>log' },
+          ['queue']: { task: 'timeout', micro: 'promise.then>promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 12 },
+          ['stack']: { stack: 'script' },
+          ['queue']: { task: 'timeout', micro: 'promise.then>promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: -1 },
+          ['stack']: { stack: '' },
+          ['queue']: { task: 'timeout', micro: 'promise.then>promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 7 },
+          ['stack']: { stack: 'promise' },
+          ['queue']: { task: 'timeout', micro: 'promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 7 },
+          ['stack']: { stack: 'promise>log' },
+          ['queue']: { task: 'timeout', micro: 'promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 7 },
+          ['stack']: { stack: 'promise' },
+          ['queue']: { task: 'timeout', micro: 'promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: -1 },
+          ['stack']: { stack: '' },
+          ['queue']: { task: 'timeout', micro: 'promise.then' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 9 },
+          ['stack']: { stack: 'promise' },
+          ['queue']: { task: 'timeout', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 9 },
+          ['stack']: { stack: 'promise>log' },
+          ['queue']: { task: 'timeout', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 9 },
+          ['stack']: { stack: 'promise' },
+          ['queue']: { task: 'timeout', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: -1 },
+          ['stack']: { stack: '' },
+          ['queue']: { task: 'timeout', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 3 },
+          ['stack']: { stack: 'timeout' },
+          ['queue']: { task: '', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 3 },
+          ['stack']: { stack: 'timeout>log' },
+          ['queue']: { task: '', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: 3 },
+          ['stack']: { stack: 'timeout' },
+          ['queue']: { task: '', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['code']: { code: 'queue1', line: -1 },
+          ['stack']: { stack: '' },
+          ['queue']: { task: '', micro: '' }
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'},
+          ['console']: { code: 'queue1', line: 5}
+      }},
+      { state: { // 30
+          ['title']: { title: 'Micro eventos'}
+      }},
+      { state: { // 30
+          ['title-fs']: { title: 'Los **microtask** son<br/>tareas que se ejecutan<br/>**justo después** de que<br/>la **pila se vacía**'}
+      }},
+      { state: { // 30
+          ['title-fs']: { title: 'async**/**await'}
+      }},
+      { state: { // 30
+          ['title-fs']: { title: '**nueva** forma de<br />escribir promises'}
+      }},
+      { state: { }},
+      { state: { // 30
+          ['title']: { title: 'async/await'},
+          ['code']: { code: 'vs1', line: -1 },
+      }},
+      { state: { // 30
+          ['title']: { title: 'async/await'},
+          ['code']: { code: 'vs1', line: 1 },
+      }},
+      { state: { // 30
+          ['title']: { title: 'async/await'},
+          ['code']: { code: 'vs2', line: 1 },
+      }},
+      { state: { // 30
+          ['title']: { title: 'async/await'},
+          ['code']: { code: 'vs2', line: 2 },
+      }},
+      { state: { // 30
+          ['title']: { title: 'async/await'},
+          ['code']: { code: 'vs3', line: 2 },
+      }},
+      { state: { // 30
+          ['title']: { title: 'async/await'},
+          ['code']: { code: 'vs3', line: 3 },
+      }},
+      { state: { // 30
+          ['title']: { title: 'async/await'},
+          ['code']: { code: 'vs4', line: 3 },
+      }},
+      { state: { // 30
+          ['title']: { title: 'async/await'},
+          ['code']: { code: 'vs4', line: 0 },
+      }},
+      { state: { // 30
+          ['title']: { title: 'async/await'},
+          ['code']: { code: 'vs5', line: 0 },
+      }},
+      { state: { // 30
+          ['title-fs']: { title: 'otros usos'}
+      }},
+      { state: { // 30
+          ['title']: { title: 'en un if'},
+          ['code']: { code: 'if', line: 1 },
+      }},
+      { state: { // 30
+          ['title']: { title: 'en un while'},
+          ['code']: { code: 'while', line: 1 },
+      }},
+      { state: { // 30
+          ['title-fs']: { title: '¡gracias!'}
+      }},
+      { state: { // 30
+          ['title-fs']: { title: '¿Preguntas?'}
+      }},
+
     ]
     class MlApp extends Polymer.Element {
 
@@ -411,7 +761,7 @@
             } else {
               node.removeAttribute('withanimation')
             }
-            let elem = slide.state[id]
+            let elem = {...defaults[id], ...slide.state[id]}
             for (const prop of Object.keys(elem)) {
               if (elem[prop] === false) {
                 node.removeAttribute(prop)
