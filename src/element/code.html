@@ -1,0 +1,115 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
+
+<link rel="import" href="shared-styles.html">
+
+
+<dom-module id="nn-code">
+  <template>
+    <style include="shared-styles">
+      .code {
+        position: absolute;
+        top: 100px;
+        left: 17px;
+        width: 570px;
+      }
+      pre {
+        font-family: var(--font-code);
+        font-size: 24px;
+      }
+      .c1 { color: var(--js-c1); }
+      .c2 { color: var(--js-c2); }
+      .c3 { color: var(--js-c3); }
+      .c4 { color: var(--js-c4); }
+      .c5 { color: var(--js-c5); }
+      .highlight {
+        background-color: var(--js-line-high);
+        width: 100%;
+        display: inline-block;
+      }
+    </style>
+
+    <div class="code" id="nn-code" hidden="[[_hidden]]">
+      <div id="stack" hidden>
+        <pre>
+<span class="line"><span class="c1">function</span> add<span class="c2">(</span>a, b<span class="c2">)</span> {</span>
+<span class="line">  <span class="c3">return</span> a <span class="c2">+</span> b;</span>
+<span class="line">}</span>
+<span class="line"><span class="c1">function</span> add7<span class="c2">(</span>a<span class="c2">)</span> {</span>
+<span class="line">  <span class="c3">return</span> add<span class="c2">(</span>a, <span class="c5">7</span><span class="c2">)</span>;</span>
+<span class="line">}</span>
+<span class="line"><span class="c1">function</span> getSecret<span class="c2">(</span>b<span class="c2">)</span> {</span>
+<span class="line">  <span class="c3">return</span> add7<span class="c2">(</span>b<span class="c2">*</span><span class="c5">7</span><span class="c2">)</span>);</span>
+<span class="line">}</span>
+<span class="line"><span class="c3">const</span> mySecret <span class="c2">=</span> getSecret<span class="c2">(</span><span class="c5">5</span></5><span class="c2">)</span>;</span>
+<span class="line">console<span class="c2">.</span>log<span class="c2">(</span>mySecret<span class="c2">)</span>;</span>
+        </pre>
+      </div>
+      <div id="async" hidden>
+          <pre>
+<span class="line">console<span class="c2">.</span>log<span class="c2">(</span><span class="c4">"primero"</span><span class="c2">)</span>;</span>
+
+<span class="line">setTimeout<span class="c2">(</span>function<span class="c2">(</span><span class="c2">)</span> {</span>
+<span class="line">  console<span class="c2">.</span>log<span class="c2">(</span><span class="c4">"segundo"</span><span class="c2">)</span>;</span>
+<span class="line">}, <span class="c5">1000</span><span class="c2">)</span></span>
+
+<span class="line">console<span class="c2">.</span>log<span class="c2">(</span><span class="c4">"tercero"</span><span class="c2">)</span>;</span>
+          </pre>
+        </div>
+    </div>
+
+  </template>
+
+  <script>
+    class MlCode extends Polymer.Element {
+      static get is() { return 'nn-code'; }
+
+      static get properties() {
+        return {
+          code: String,
+          line: Number,
+          withanimation: Boolean
+        };
+      }
+
+      static get observers() {
+        return [
+          '_updateCode(code)',
+          '_updateLine(line)'
+        ];
+      }
+      _updateCode(code) {
+        const tipsNode = this.root.getElementById('nn-code')
+        const children = tipsNode.children
+        for (const child of children) {
+          if (child.id === code) {
+            child.removeAttribute('hidden')
+          } else {
+            child.setAttribute('hidden', true)
+          }
+        }
+      }
+
+      _updateLine(line) {
+        this.root
+          .querySelectorAll('.highlight')
+          .forEach(e => e.classList.remove('highlight'))
+        if (typeof line === 'number' && line >= 0) {
+          this.root
+            .querySelectorAll('pre')
+            .forEach(e => {
+              const lineNode = e.children[line]
+              if (lineNode) {
+                lineNode.classList.add('highlight')
+              }
+            })
+        }
+        // highlight
+      }
+
+    }
+
+    window.customElements.define(MlCode.is, MlCode);
+    console.log('loaded')
+  </script>
+</dom-module>

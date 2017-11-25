@@ -22,13 +22,20 @@
         justify-content: center;
         align-items: center;
       }
+      [slot="markdown-html"] strong {
+        color: white;
+      }
     </style>
 
     <div class="wrapper">
-      <marked-element markdown="[[_title]]" old hidden="[[_hiden]]"></marked-element>
+      <marked-element markdown="[[_title]]" old hidden="[[_hiden]]">
+        <div slot="markdown-html"></div>
+      </marked-element>
     </div>
     <div class="wrapper">
-      <marked-element markdown="[[_titleNew]]" new hidden="[[_hidenew]]"></marked-element>
+      <marked-element markdown="[[_titleNew]]" new hidden="[[_hidenew]]">
+        <div slot="markdown-html"></div>
+      </marked-element>
     </div>
   </template>
 
@@ -43,20 +50,20 @@
       static get properties() {
         return {
           title: String,
-          animate: Boolean
+          withanimation: Boolean
         };
       }
 
       static get observers() {
         return [
-          '_updateTitle(title, animate)'
+          '_updateTitle(title, withanimation)'
         ];
       }
 
-      _updateTitle(title, animate) {
+      _updateTitle(title, withanimation) {
         if (title === this._title) { return }
         this._hiden = false
-        if (!animate) {
+        if (!withanimation) {
           this._title = title
           this._titleNew = ''
           this._hidenew = true

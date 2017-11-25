@@ -1,6 +1,11 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="./element/title-fs.html">
 <link rel="import" href="./element/title.html">
+<link rel="import" href="./element/stack.html">
+<link rel="import" href="./element/tips.html">
+<link rel="import" href="./element/code.html">
+<link rel="import" href="./element/code.html">
+<link rel="import" href="./element/console.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="nn-app">
@@ -20,36 +25,311 @@
 
     <nn-title-fs id="title-fs"></nn-title-fs>
     <nn-title id="title"></nn-title>
+    <nn-stack id="stack" stack=''></nn-stack>
+    <nn-tips  id="tips"></nn-tips>
+    <nn-code id="code"></nn-code>
+    <nn-console id="console"></nn-console>
   </template>
 
   <script>
+    const defaults = {
+      ['title']: { title: '' },
+      ['title-fs']: { title: ''},
+      ['stack']: { stack: false },
+      ['tips']: { tip: false },
+      ['code']: { code: false, line: -1 },
+      ['console']: { code: false, line: 0 },
+    }
     const slides = [
       // intro
-      {
-        elem: [
-          {id: 'title', props: [ ['title', ''] ]},
-          {id: 'title-fs', props: [ ['title', 'Javascript asíncrono<br/>¡async-ascript!'] ]}
-        ]
-      },
-      {
-        elem: [
-          {id: 'title', props: [ ['title', ''] ]},
-          {id: 'title-fs', props: [ ['title', 'Javascript asíncrono<br/>¿Por qué lo necesitamos?'] ]},
-        ]
-      },
-      {
-        elem: [
-          {id: 'title', props: [ ['title', 'Pila de ejecución'] ]},
-          {id: 'title-fs', props: [ ['title', ''] ]}
+      { state: { // 0
+          ['title-fs']: { title: 'Javascript asíncrono<br/>¡async-ascript!' }
+      }},
+      { state: { // 1
+          ['title-fs']: { title: 'Javascript asíncrono<br/>¿Por qué lo necesitamos?'}
+      }},
 
-        ]
-      },
-      {
-        elem: [
-          {id: 'title', props: [ ['title', ''] ]},
-          {id: 'title-fs', props: [ ['title', 'test title'] ]}
-        ]
-      }
+      // Stack
+      { state: { // 2
+          ['title']: { title: 'Pila de ejecución'}
+      }},
+      { state: { // 3
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: '' }
+      }},
+      { state: { // 4
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: '' },
+          ['tips']: { tip: 'stack' },
+      }},
+      { state: { // 5
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: '1' },
+          ['tips']: { tip: 'stack' },
+      }},
+      { state: { // 6
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: '1>2' },
+          ['tips']: { tip: 'stack' },
+      }},
+      { state: { // 7
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: '1>2>3' },
+          ['tips']: { tip: 'stack' },
+      }},
+      { state: { // 8
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: '1>2' },
+          ['tips']: { tip: 'stack' },
+      }},
+      { state: { // 9
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: '1' },
+          ['tips']: { tip: 'stack' },
+      }},
+      { state: { // 10
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: '' },
+          ['tips']: { tip: 'stack' },
+      }},
+
+      // Código
+      { state: { // 11
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: '' },
+          ['code']: { code: 'stack', line: -1 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 12
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'stack', line: 0 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 13
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'stack', line: 3 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 14
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'stack', line: 6 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 15
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'stack', line: 9 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 16
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script>getSecret' },
+          ['code']: { code: 'stack', line: 9 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 17
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script>getSecret' },
+          ['code']: { code: 'stack', line: 7 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 18
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script>getSecret>add7' },
+          ['code']: { code: 'stack', line: 7 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 19
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script>getSecret>add7' },
+          ['code']: { code: 'stack', line: 4 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 20
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script>getSecret>add7>add' },
+          ['code']: { code: 'stack', line: 4 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 21
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script>getSecret>add7>add' },
+          ['code']: { code: 'stack', line: 1 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 22
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script>getSecret>add7' },
+          ['code']: { code: 'stack', line: 4 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 23
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script>getSecret' },
+          ['code']: { code: 'stack', line: 7 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 24
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'stack', line: 9 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 25
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'stack', line: 10 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 26
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script>log' },
+          ['code']: { code: 'stack', line: 10 },
+          ['console']: { code: 'stack', line: 0},
+      }},
+      { state: { // 27
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script>log' },
+          ['code']: { code: 'stack', line: 10 },
+          ['console']: { code: 'stack', line: 1},
+      }},
+      { state: { // 28
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'stack', line: 10 },
+          ['console']: { code: 'stack'},
+      }},
+      { state: { // 29
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'stack', line: -1 },
+          ['console']: { code: 'stack'},
+      }},
+      { state: { // 30
+          ['title']: { title: 'Pila de ejecución'},
+          ['stack']: { stack: '' },
+          ['code']: { code: 'stack', line: -1 },
+          ['console']: { code: 'stack'},
+      }},
+
+      // eventos asíncronos
+      { state: { // 30
+          ['title-fs']: { title: 'El navegador sólo puede<br/>correr **un proceso**<br/>a la vez'},
+      }},
+      { state: { // 31
+          ['title']: { title: 'Eventos asíncronos'},
+      }},
+      { state: { // 32
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: '' },
+          ['code']: { code: 'async', line: -1 },
+          ['console']: { code: 'async', line: 0 },
+      }},
+      { state: { // 33
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'async', line: 0 },
+          ['console']: { code: 'async', line: 0 },
+      }},
+      { state: { // 34
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'script>log' },
+          ['code']: { code: 'async', line: 0 },
+          ['console']: { code: 'async', line: 0 },
+      }},
+      { state: { // 34
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'script>log' },
+          ['code']: { code: 'async', line: 0 },
+          ['console']: { code: 'async', line: 1 },
+      }},
+      { state: { // 34
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'async', line: 0 },
+          ['console']: { code: 'async', line: 1 },
+      }},
+      { state: { // 35
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'async', line: 1 },
+          ['console']: { code: 'async', line: 1 },
+      }},
+      { state: { // 36
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'script>setTimeout' },
+          ['code']: { code: 'async', line: 1 },
+          ['console']: { code: 'async', line: 1 },
+      }},
+      { state: { // 37
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'async', line: 1 },
+          ['console']: { code: 'async', line: 1 },
+      }},
+      { state: { // 38
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'async', line: 4 },
+          ['console']: { code: 'async', line: 1 },
+      }},
+      { state: { // 38
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'script>log' },
+          ['code']: { code: 'async', line: 4 },
+          ['console']: { code: 'async', line: 1 },
+      }},
+      { state: { // 38
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'script>log' },
+          ['code']: { code: 'async', line: 4 },
+          ['console']: { code: 'async', line: 2 },
+      }},
+      { state: { // 38
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'script' },
+          ['code']: { code: 'async', line: 4 },
+          ['console']: { code: 'async', line: 2 },
+      }},
+      { state: { // 38
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: '' },
+          ['code']: { code: 'async', line: -1 },
+          ['console']: { code: 'async', line: 2 },
+      }},
+      { state: { // 38
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'timeout' },
+          ['code']: { code: 'async', line: 2 },
+          ['console']: { code: 'async', line: 2 },
+      }},
+      { state: { // 38
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'timeout>log' },
+          ['code']: { code: 'async', line: 2 },
+          ['console']: { code: 'async', line: 2 },
+      }},
+      { state: { // 38
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'timeout>log' },
+          ['code']: { code: 'async', line: 2 },
+          ['console']: { code: 'async', line: 3 },
+      }},
+      { state: { // 38
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: 'timeout' },
+          ['code']: { code: 'async', line: 2 },
+          ['console']: { code: 'async', line: 3 },
+      }},
+      { state: { // 38
+          ['title']: { title: 'Eventos asíncronos'},
+          ['stack']: { stack: '' },
+          ['code']: { code: 'async', line: -1 },
+          ['console']: { code: 'async', line: 3 },
+      }},
     ]
     class MlApp extends Polymer.Element {
 
@@ -119,19 +399,25 @@
         if (this.step === step) { return }
         if (this.step === undefined) { history.replaceState({}, `/slides/${step}`, `/slides/${step}`) }
         history.pushState({}, `/slides/${step}`, `/slides/${step}`)
-        const animate = this.step + 1 === step
+        const withanimation = this.step + 1 === step
         this.step = step
         requestAnimationFrame(() => {
-          const slide = slides[step]
-          for (const elem of slide.elem) {
-            let node = this.root.getElementById(elem.id);
-            if (animate) {
-              node.setAttribute('animate', true)
+          const slide = {...slides[step]}
+          slide.state = {...defaults, ...slide.state}
+          for (const id of Object.keys(slide.state)) {
+            let node = this.root.getElementById(id);
+            if (withanimation) {
+              node.setAttribute('withanimation', true)
             } else {
-              node.removeAttribute('animate')
+              node.removeAttribute('withanimation')
             }
-            for (const prop of elem.props) {
-              node.setAttribute.apply(node, prop)
+            let elem = slide.state[id]
+            for (const prop of Object.keys(elem)) {
+              if (elem[prop] === false) {
+                node.removeAttribute(prop)
+              } else {
+                node.setAttribute(prop, elem[prop])
+              }
             }
           }
         })

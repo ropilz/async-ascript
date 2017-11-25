@@ -43,27 +43,27 @@
       static get properties() {
         return {
           title: String,
-          animate: Boolean
+          withanimation: Boolean
         };
       }
 
       static get observers() {
         return [
-          '_updateTitle(title, animate)'
+          '_updateTitle(title, withanimation)'
         ];
       }
 
-      _updateTitle(title, animate) {
+      _updateTitle(title, withanimation) {
         if (title === this._title) { return }
-        this._hiden = false
-        if (!animate) {
+        this._hidden = false
+        if (!withanimation) {
           this._title = title
           this._titleNew = ''
           this._hidenew = true
           if (!this._title) {
-            this._hiden = true
+            this._hidden = true
           } else {
-            this._hiden = false
+            this._hidden = false
           }
         } else {
           const newNode = this.root.querySelector('[new]')
@@ -94,9 +94,9 @@
               this._titleNew = ''
               this._hidenew = true
               if (!this._title) {
-                this._hiden = true
+                this._hidden = true
               } else {
-                this._hiden = false
+                this._hidden = false
               }
             })
           }
