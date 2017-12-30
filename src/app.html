@@ -7,11 +7,10 @@
 <link rel="import" href="./element/code.html">
 <link rel="import" href="./element/console.html">
 <link rel="import" href="./element/queue.html">
-<link rel="import" href="shared-styles.html">
 
 <dom-module id="nn-app">
   <template>
-    <style include="shared-styles">
+    <style>
       :host {
         width: 800px;
         height: 600px;
@@ -752,8 +751,8 @@
         const withanimation = this.step + 1 === step
         this.step = step
         requestAnimationFrame(() => {
-          const slide = {...slides[step]}
-          slide.state = {...defaults, ...slide.state}
+          const slide = Object.assign({}, slides[step])
+          slide.state = Object.assign({}, defaults, slide.state)
           for (const id of Object.keys(slide.state)) {
             let node = this.root.getElementById(id);
             if (withanimation) {
@@ -761,7 +760,7 @@
             } else {
               node.removeAttribute('withanimation')
             }
-            let elem = {...defaults[id], ...slide.state[id]}
+            let elem = Object.assign({}, defaults[id], slide.state[id])
             for (const prop of Object.keys(elem)) {
               if (elem[prop] === false) {
                 node.removeAttribute(prop)

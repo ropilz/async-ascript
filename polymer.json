@@ -1,21 +1,20 @@
 {
   "entrypoint": "index.html",
   "sources": [
-    "src/**/*",
-    "bower.json"
+    "src/**/*"
   ],
   "extraDependencies": [
-    "bower_components/webcomponentsjs/webcomponents-*.js"
+    "bower_components/webcomponentsjs/*.js",
+    "bower_components/web-animations/*.js"
   ],
   "lint": {
     "rules": ["polymer-2"]
   },
-  "builds": [{
-    "bundle": true,
-    "insertPrefetchLinks": true,
-    "addServiceWorker": true,
-    "js": {"minify": true},
-    "css": {"minify": true},
-    "html": {"minify": true}
-  }]
+  "builds": [
+    {
+      "js": {"minify": true},
+      "css": {"minify": true},
+      "html": {"minify": true}
+    }
+  ]
 }

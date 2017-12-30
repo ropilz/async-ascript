@@ -10,5 +10,8 @@
   "flat": true,
   "dependencies": {
     "bower": "^1.8.2"
+  },
+  "devDependencies": {
+    "babel-helpers": "^6.24.1"
   }
 }

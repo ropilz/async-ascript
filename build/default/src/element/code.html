@@ -1,0 +1,81 @@
+<html><head><link rel="import" href="../../bower_components/polymer/polymer-element.html"><link rel="import" href="../../bower_components/marked-element/marked-element.html"></head><body><dom-module id="nn-code"><template><style>.code{position:absolute;top:100px;left:17px;width:570px;transition:transform 235ms ease-in-out;}.code.fullscreen{transform:translate(70px, -20px) scale(1.2);transition:none;}pre{font-family:var(--font-code);font-size:24px;}.c1{color:var(--js-c1);}.c2{color:var(--js-c2);}.c3{color:var(--js-c3);}.c4{color:var(--js-c4);}.c5{color:var(--js-c5);}.highlight{background-color:var(--js-line-high);width:100%;display:inline-block;}#queue1{position:relative;top:-20px;}#vs1{margin-top:180px;width:800px;}#vs2{margin-top:180px;width:800px;}#vs3{margin-top:180px;width:800px;}#vs4{margin-top:180px;width:800px;}#vs5{margin-top:180px;width:800px;}#if{margin-top:180px;width:800px;}#while{margin-top:180px;width:800px;}</style><div class$="[[cssClass]]" id="nn-code" hidden="[[_hidden]]"><div id="stack" hidden=""><pre><span class="line"><span class="c1">function</span> add<span class="c2">(</span>a, b<span class="c2">)</span> {</span>
+<span class="line">  <span class="c3">return</span> a <span class="c2">+</span> b;</span>
+<span class="line">}</span>
+<span class="line"><span class="c1">function</span> add7<span class="c2">(</span>a<span class="c2">)</span> {</span>
+<span class="line">  <span class="c3">return</span> add<span class="c2">(</span>a, <span class="c5">7</span><span class="c2">)</span>;</span>
+<span class="line">}</span>
+<span class="line"><span class="c1">function</span> getSecret<span class="c2">(</span>b<span class="c2">)</span> {</span>
+<span class="line">  <span class="c3">return</span> add7<span class="c2">(</span>b<span class="c2">*</span><span class="c5">7</span><span class="c2">)</span>);</span>
+<span class="line">}</span>
+<span class="line"><span class="c3">const</span> mySecret <span class="c2">=</span> getSecret<span class="c2">(</span><span class="c5">5</span><span class="c2">)</span>;</span>
+<span class="line">console<span class="c2">.</span>log<span class="c2">(</span>mySecret<span class="c2">)</span>;</span>
+        </pre></div><div id="async" hidden=""><pre><span class="line">console<span class="c2">.</span>log<span class="c2">(</span><span class="c4">"primero"</span><span class="c2">)</span>;</span>
+
+<span class="line">setTimeout<span class="c2">(</span>function<span class="c2">(</span><span class="c2">)</span> {</span>
+<span class="line">  console<span class="c2">.</span>log<span class="c2">(</span><span class="c4">"segundo"</span><span class="c2">)</span>;</span>
+<span class="line">}, <span class="c5">1000</span><span class="c2">)</span></span>
+
+<span class="line">console<span class="c2">.</span>log<span class="c2">(</span><span class="c4">"tercero"</span><span class="c2">)</span>;</span>
+        </pre></div><div id="queue1" hidden=""><pre><span class="line">console<span class="c2">.</span>log<span class="c2"></span><span class="c2">(</span><span class="c4">"script1"</span><span class="c2">)</span>;</span>
+<span class="line"></span>
+<span class="line">setTimeout<span class="c2">(</span>function<span class="c2">(</span><span class="c2">)</span> {</span>
+<span class="line">  console<span class="c2">.</span>log<span class="c2"></span><span class="c2">(</span><span class="c4">"setTimeout"</span><span class="c2">)</span>;</span>
+<span class="line">}, 0<span class="c2">)</span>;</span>
+<span class="line"></span>
+<span class="line">Promise.resolve<span class="c2">(</span><span class="c2">)</span>.then<span class="c2">(</span>function<span class="c2">(</span><span class="c2">)</span> {</span>
+<span class="line">  console<span class="c2">.</span>log<span class="c2"></span><span class="c2">(</span><span class="c4">"promise1"</span><span class="c2">)</span>;</span>
+<span class="line">}<span class="c2">)</span>.then<span class="c2">(</span>function<span class="c2">(</span><span class="c2">)</span> {</span>
+<span class="line">  console<span class="c2">.</span>log<span class="c2"></span><span class="c2">(</span><span class="c4">"promise2"</span><span class="c2">)</span>;</span>
+<span class="line">}<span class="c2">)</span>;</span>
+<span class="line"></span>
+<span class="line">console<span class="c2">.</span>log<span class="c2"></span><span class="c2">(</span><span class="c4">"script2"</span><span class="c2">)</span>;</span>
+        </pre></div><div id="timeoutSort" hidden=""><pre><span class="line"><span class="c1">function</span> sort<span class="c2">(</span>num,c<span class="c2">)</span> {</span>
+<span class="line">  <span class="c3">const</span> out <span class="c2">=</span> <span class="c2">[</span><span class="c2">]</span>;</span>
+<span class="line">  num<span class="c2">.</span>forEach<span class="c2">(</span>v <span class="c3">=&gt;</span> {</span>
+<span class="line">    setTimeout<span class="c2">(</span><span class="c2">(</span><span class="c2">)</span> <span class="c3">=&gt;</span> {</span>
+<span class="line">      out<span class="c2">.</span>push<span class="c2">(</span>v<span class="c2">)</span></span>
+<span class="line">      if <span class="c2">(</span>out<span class="c2">.</span>length <span class="c2">===</span> num<span class="c2">.</span>length<span class="c2">)</span> {</span>
+<span class="line">        c<span class="c2">(</span>out<span class="c2">)</span></span>
+<span class="line">      }</span>
+<span class="line">    }, v<span class="c2">)</span></span>
+<span class="line">  })</span>
+<span class="line">}</span>
+<span class="line">sort<span class="c2">(</span>[<span class="c5">9</span>,<span class="c5">1</span>,<span class="c5">7</span>,<span class="c5">6</span>,<span class="c5">5</span>,<span class="c5">3</span>], console<span class="c2">.</span>log<span class="c2">)</span></span>
+        </pre></div><div id="timeout" hidden=""><pre><span class="line">setTimeout<span class="c2">(</span><span class="c2">(</span><span class="c2">)</span> <span class="c3">=&gt;</span> console.log<span class="c2">(</span><span class="c5">1</span><span class="c2">)</span>, <span class="c5">1</span><span class="c2">)</span></span>
+<span class="line">setTimeout<span class="c2">(</span><span class="c2">(</span><span class="c2">)</span> <span class="c3">=&gt;</span> console.log<span class="c2">(</span><span class="c5">0</span><span class="c2">)</span>, <span class="c5">0</span><span class="c2">)</span></span>
+        </pre></div><div id="vs1" hidden=""><pre><span class="line"><span class="c1">function</span> getNumberOfResults<span class="c2">(</span><span class="c2">)</span> {</span>
+<span class="line">  <span class="c3">return</span> fetch<span class="c2">(</span><span class="c4">'https://google.com/...'</span><span class="c2">)</span></span>
+<span class="line">    .then<span class="c2">(</span>validateData<span class="c2">)</span></span>
+<span class="line">    .then<span class="c2">(</span>transformData<span class="c2">)</span></span>
+<span class="line">}</span>
+        </pre></div><div id="vs2" hidden=""><pre><span class="line"><span class="c1">function</span> getNumberOfResults<span class="c2">(</span><span class="c2">)</span> {</span>
+<span class="line">  <span class="c3">let</span> result <span class="c2">=</span> <span class="c3">await</span> fetch<span class="c2">(</span><span class="c4">'https://google.com/...'</span><span class="c2">)</span></span>
+<span class="line">    .then<span class="c2">(</span>validateData<span class="c2">)</span></span>
+<span class="line">    .then<span class="c2">(</span>transformData<span class="c2">)</span></span>
+<span class="line">}</span>
+        </pre></div><div id="vs3" hidden=""><pre><span class="line"><span class="c1">function</span> getNumberOfResults<span class="c2">(</span><span class="c2">)</span> {</span>
+<span class="line">  <span class="c3">let</span> result <span class="c2">=</span> <span class="c3">await</span> fetch<span class="c2">(</span><span class="c4">'https://google.com/...'</span><span class="c2">)</span></span>
+<span class="line">  <span class="c3">let</span> validatedData <span class="c2">=</span> <span class="c3">await</span> validateData<span class="c2">(</span>result<span class="c2">)</span></span>
+<span class="line">    .then<span class="c2">(</span>transformData<span class="c2">)</span></span>
+<span class="line">}</span>
+        </pre></div><div id="vs4" hidden=""><pre><span class="line"><span class="c1">function</span> getNumberOfResults<span class="c2">(</span><span class="c2">)</span> {</span>
+<span class="line">  <span class="c3">let</span> result <span class="c2">=</span> <span class="c3">await</span> fetch<span class="c2">(</span><span class="c4">'https://google.com/...'</span><span class="c2">)</span></span>
+<span class="line">  <span class="c3">let</span> validatedData <span class="c2">=</span> <span class="c3">await</span> validateData<span class="c2">(</span>result<span class="c2">)</span></span>
+<span class="line">  <span class="c3">return</span> transformData<span class="c2">(</span>validatedData<span class="c2">)</span></span>
+<span class="line">}</span>
+        </pre></div><div id="vs5" hidden=""><pre><span class="line"><span class="c3">async</span> <span class="c1">function</span> getNumberOfResults<span class="c2">(</span><span class="c2">)</span> {</span>
+<span class="line">  <span class="c3">let</span> result <span class="c2">=</span> <span class="c3">await</span> fetch<span class="c2">(</span><span class="c4">'https://google.com/...'</span><span class="c2">)</span></span>
+<span class="line">  <span class="c3">let</span> validatedData <span class="c2">=</span> <span class="c3">await</span> validateData<span class="c2">(</span>result<span class="c2">)</span></span>
+<span class="line">  <span class="c3">return</span> transformData<span class="c2">(</span>validatedData<span class="c2">)</span></span>
+<span class="line">}</span>
+      </pre></div><div id="if" hidden=""><pre><span class="line"><span class="c3">async</span> <span class="c1">function</span> some<span class="c2">(</span><span class="c2">)</span> {</span>
+<span class="line">  if<span class="c2">(</span>a <span class="c2">===</span> <span class="c3">await</span> fetch<span class="c2">(</span><span class="c4">'localhost:8080'</span><span class="c2">)</span><span class="c2">)</span> {</span>
+<span class="line">    console<span class="c2">.</span>log<span class="c2">(</span>'yes!'<span class="c2">)</span></span>
+<span class="line">  }</span>
+<span class="line">}</span>
+      </pre></div><div id="while" hidden=""><pre><span class="line"><span class="c3">async</span> <span class="c1">function</span> some<span class="c2">(</span><span class="c2">)</span> {</span>
+<span class="line">  while<span class="c2">(</span>a <span class="c2">===</span> <span class="c3">await</span> fetch<span class="c2">(</span><span class="c4">'localhost:8080'</span><span class="c2">)</span><span class="c2">)</span> {</span>
+<span class="line">    console<span class="c2">.</span>log<span class="c2">(</span>'yes!'<span class="c2">)</span></span>
+<span class="line">  }</span>
+<span class="line">}</span>
+      </pre></div></div></template><script>class MlCode extends Polymer.Element{static get is(){return'nn-code'}static get properties(){return{code:String,line:Number,fullscreen:Boolean,withanimation:Boolean,cssClass:{type:String,computed:'_getClass(fullscreen)',value:'code'}}}static get observers(){return['_updateCode(code)','_updateLine(line)']}_getClass(a){return console.log(`code ${a?'fullscreen':''}`),`code ${a?'fullscreen':''}`}_updateCode(a){const b=this.root.getElementById('nn-code'),c=b.children;for(const b of c)b.id===a?b.removeAttribute('hidden'):b.setAttribute('hidden',!0)}_updateLine(a){this.root.querySelectorAll('.highlight').forEach((a)=>a.classList.remove('highlight')),'number'===typeof a&&0<=a&&this.root.querySelectorAll('pre').forEach((b)=>{const c=b.children[a];c&&c.classList.add('highlight')})}}window.customElements.define(MlCode.is,MlCode),console.log('loaded');</script></dom-module></body></html>

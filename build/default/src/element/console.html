@@ -1,0 +1,12 @@
+<html><head><link rel="import" href="../../bower_components/polymer/polymer-element.html"><link rel="import" href="../../bower_components/marked-element/marked-element.html"></head><body><dom-module id="nn-console"><template><style>pre{font-family:var(--font-code);font-size:24px;}#stack{position:absolute;border-top:3px solid white;top:446px;width:590px;}#stack pre{width:590px;font-size:54px;text-align:center;margin-top:44px;}#async{position:absolute;border-top:3px solid white;top:370px;width:590px;}#async pre{width:590px;margin-left:50px;font-size:42px;}#queue1, #timeout{position:absolute;border-top:3px solid white;top:210px;width:100%;}#queue1 pre, #timeout pre{width:590px;margin-left:50px;font-size:42px;}</style><div class="code" id="nn-console" hidden="[[_hidden]]"><div id="stack" hidden=""><pre><span>42</span>
+        </pre></div><div id="async" hidden=""><pre><span>primero</span>
+<span>tercero</span>
+<span>segundo</span>
+        </pre></div><div id="queue1" hidden=""><pre><span>script1</span>
+<span>script2</span>
+<span>promise1</span>
+<span>promise2</span>
+<span>timeout</span>
+        </pre></div><div id="timeout" hidden=""><pre><span>1</span>
+<span>0</span>
+        </pre></div></div></template><script>class MlConsole extends Polymer.Element{static get is(){return'nn-console'}static get properties(){return{code:String,line:Number,withanimation:Boolean}}static get observers(){return['_updateConsole(code)','_updateLine(code, line)']}_updateConsole(a){const b=this.root.getElementById('nn-console'),c=b.children;for(const b of c)b.id===a?b.removeAttribute('hidden'):b.setAttribute('hidden',!0);a&&this._updateLine(a,this.line||0)}_updateLine(a,b){if(a){const c=this.root.getElementById(a).children[0],d=c.children;for(let a=0;a<d.length;a+=1){const c=d[a];a<b?c.removeAttribute('hidden'):c.setAttribute('hidden',!0)}}}}window.customElements.define(MlConsole.is,MlConsole),console.log('loaded');</script></dom-module></body></html>
